@@ -3,6 +3,7 @@ package middlewares
 import (
 	"context"
 	_entities "final-project-usamah/entities"
+	"log"
 	"net/http"
 	"strings"
 
@@ -57,4 +58,13 @@ func Authentication(next http.Handler) http.Handler {
 func ForContext(ctx context.Context) *_entities.User {
 	raw, _ := ctx.Value(ctxKey).(*_entities.User)
 	return raw
+}
+
+func LoggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Do stuff here
+		log.Println(r.RequestURI)
+		// Call the next handler, which can be another middleware in the chain, or the final handler.
+		next.ServeHTTP(w, r)
+	})
 }

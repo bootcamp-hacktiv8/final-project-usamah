@@ -21,5 +21,6 @@ func (cr CommentResource) CommentRoute(commentRepository _commentRepository.Comm
 	router.Handle("/", middlewares.Authentication(http.HandlerFunc(commentHandler.GetAllCommentHandler))).Methods("GET")
 	router.Handle("/{commentId}", middlewares.Authentication(http.HandlerFunc(commentHandler.UpdateCommentHandler))).Methods("PUT")
 	router.Handle("/{commentId}", middlewares.Authentication(http.HandlerFunc(commentHandler.DeleteCommentHandler))).Methods("DELETE")
+	router.Use(middlewares.LoggingMiddleware)
 	return router
 }

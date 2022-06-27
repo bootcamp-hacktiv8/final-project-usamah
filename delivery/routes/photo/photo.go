@@ -21,5 +21,6 @@ func (pr PhotoResource) PhotoRoute(photoRepository _photoRepository.PhotoReposit
 	router.Handle("/", middlewares.Authentication(http.HandlerFunc(photoHandler.GetAllPhotoHandler))).Methods("GET")
 	router.Handle("/{photoId}", middlewares.Authentication(http.HandlerFunc(photoHandler.UpdatePhotoHandler))).Methods("PUT")
 	router.Handle("/{photoId}", middlewares.Authentication(http.HandlerFunc(photoHandler.DeletePhotoHandler))).Methods("DELETE")
+	router.Use(middlewares.LoggingMiddleware)
 	return router
 }

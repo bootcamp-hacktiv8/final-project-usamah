@@ -21,6 +21,6 @@ func (ur UserResource) UserRoute(userRepository _userRepository.UserRepositoryIn
 	router.Handle("/login", http.HandlerFunc(userHandler.LoginHandler)).Methods("POST")
 	router.Handle("/", middlewares.Authentication(http.HandlerFunc(userHandler.UpdateUserHandler))).Methods("PUT")
 	router.Handle("/", middlewares.Authentication(http.HandlerFunc(userHandler.DeleteUserHandler))).Methods("DELETE")
-	// router.Use(middleware.LoggingMiddleware)
+	router.Use(middlewares.LoggingMiddleware)
 	return router
 }

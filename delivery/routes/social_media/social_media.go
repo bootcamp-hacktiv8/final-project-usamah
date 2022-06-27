@@ -21,5 +21,6 @@ func (sr SosmedResource) SosmedRoute(sosmedRepository _sosmedRepository.SosmedRe
 	router.Handle("/", middlewares.Authentication(http.HandlerFunc(sosmedHandler.GetAllSosmedHandler))).Methods("GET")
 	router.Handle("/{socialMediaId}", middlewares.Authentication(http.HandlerFunc(sosmedHandler.UpdateSosmedHandler))).Methods("PUT")
 	router.Handle("/{socialMediaId}", middlewares.Authentication(http.HandlerFunc(sosmedHandler.DeleteSosmedHandler))).Methods("DELETE")
+	router.Use(middlewares.LoggingMiddleware)
 	return router
 }
