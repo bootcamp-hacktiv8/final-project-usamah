@@ -8,6 +8,7 @@ import (
 	"final-project-usamah/delivery/middlewares"
 	_entities "final-project-usamah/entities"
 	_photoService "final-project-usamah/service/photo"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -57,6 +58,7 @@ func (ph *PhotoHandler) CreatePhotoHandler(w http.ResponseWriter, r *http.Reques
 func (ph *PhotoHandler) GetAllPhotoHandler(w http.ResponseWriter, r *http.Request) {
 	photos, err := ph.photoService.GetAllPhoto()
 	responsePhotos := _response.ResponseGetPhoto(photos)
+	fmt.Println(responsePhotos)
 	switch {
 	case err == sql.ErrNoRows:
 		response, _ := json.Marshal(_helper.APIResponseFailed("data not found"))

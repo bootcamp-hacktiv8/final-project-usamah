@@ -53,12 +53,13 @@ type GetCommentFormatter struct {
 func ResponseGetComment(comment []entities.Comment) []GetCommentFormatter {
 	var comments []GetCommentFormatter
 	for i := 0; i < len(comment); i++ {
-		comment := GetCommentFormatter{
+		getcomment := GetCommentFormatter{
 			Id:         comment[i].Id,
 			User_id:    comment[i].User_id,
 			Photo_id:   comment[i].Photo_id,
 			Message:    comment[i].Message,
 			Created_at: comment[i].Created_at,
+			Updated_at: comment[i].Updated_at,
 			User: GetCommentUser{
 				Id:       comment[i].User.Id,
 				Username: comment[i].User.Username,
@@ -72,7 +73,7 @@ func ResponseGetComment(comment []entities.Comment) []GetCommentFormatter {
 				Photo_url: comment[i].Photo.Photo_url,
 			},
 		}
-		comments = append(comments, comment)
+		comments = append(comments, getcomment)
 	}
 	return comments
 }

@@ -43,8 +43,8 @@ type GetPhotoFormatter struct {
 
 func ResponseGetPhoto(photo []entities.Photo) []GetPhotoFormatter {
 	var photos []GetPhotoFormatter
-	for i := 0; i < len(photos); i++ {
-		photo := GetPhotoFormatter{
+	for i := 0; i < len(photo); i++ {
+		getphoto := GetPhotoFormatter{
 			Id:         photo[i].Id,
 			User_id:    photo[i].User_id,
 			Title:      photo[i].Title,
@@ -57,7 +57,7 @@ func ResponseGetPhoto(photo []entities.Photo) []GetPhotoFormatter {
 				Email:    photo[i].User.Email,
 			},
 		}
-		photos = append(photos, photo)
+		photos = append(photos, getphoto)
 	}
 	return photos
 }

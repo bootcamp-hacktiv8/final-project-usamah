@@ -43,7 +43,6 @@ type GetSosmedFormatter struct {
 
 func ResponseGetSocialMedia(socialMedia []entities.Social_media) []GetSosmedFormatter {
 	var sosmeds []GetSosmedFormatter
-
 	for i := 0; i < len(socialMedia); i++ {
 		sosmed := GetSosmedFormatter{
 			Id:               socialMedia[i].Id,

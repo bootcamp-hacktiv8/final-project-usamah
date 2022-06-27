@@ -71,7 +71,7 @@ func (cr *CommentRepository) GetComment(idComment int) (_entities.Comment, error
 }
 
 func (cr *CommentRepository) UpdateComment(updateComment _entities.Comment, idComment int) (_entities.Comment, error) {
-	query := `UPDATE photos SET message = 1$, updated_at = $2
+	query := `UPDATE comments SET message = $1, updated_at = $2
 	WHERE id = $3`
 	ctx := context.Background()
 

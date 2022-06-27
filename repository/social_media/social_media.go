@@ -70,7 +70,7 @@ func (sr *SosmedRepository) GetSosmed(idSosmed int) (_entities.Social_media, err
 }
 
 func (sr *SosmedRepository) UpdateSosmed(updateSosmed _entities.Social_media, idSosmed int) (_entities.Social_media, error) {
-	query := `UPDATE social_medias SET name = 1$, social_media_url = $2, updated_at = $3
+	query := `UPDATE social_medias SET name = $1, social_media_url = $2, updated_at = $3
 	WHERE id = $4`
 	ctx := context.Background()
 
