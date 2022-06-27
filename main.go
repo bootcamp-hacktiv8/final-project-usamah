@@ -5,6 +5,7 @@ import (
 	_routes "final-project-usamah/delivery/routes"
 	_commentRepository "final-project-usamah/repository/comment"
 	_photoRepository "final-project-usamah/repository/photo"
+	_sosmedRepository "final-project-usamah/repository/social_media"
 	_userRepository "final-project-usamah/repository/user"
 	"fmt"
 	"log"
@@ -22,11 +23,13 @@ func main() {
 	userRepository := _userRepository.NewUserRepository(db)
 	photoRepository := _photoRepository.NewPhotoRepository(db)
 	commentRepository := _commentRepository.NewCommentRepository(db)
+	sosmedRepository := _sosmedRepository.NewSosmedRepository(db)
 
 	router := _routes.Routes(
 		userRepository,
 		photoRepository,
 		commentRepository,
+		sosmedRepository,
 	)
 
 	srv := &http.Server{

@@ -1,4 +1,4 @@
-package sosial_media
+package social_media
 
 import (
 	response "final-project-usamah/delivery/helper/response/social_media"
