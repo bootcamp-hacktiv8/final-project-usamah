@@ -3,7 +3,6 @@ package user
 import (
 	"errors"
 	"final-project-usamah/delivery/helper"
-	_request "final-project-usamah/delivery/helper/request/user"
 	_entities "final-project-usamah/entities"
 	_userRepository "final-project-usamah/repository/user"
 	"strings"
@@ -52,7 +51,7 @@ func (us *UserService) Register(user _entities.User) (_entities.User, error) {
 	return newUser, err
 }
 
-func (us *UserService) Login(inputLogin _request.FormatLogin) (_entities.User, error) {
+func (us *UserService) Login(inputLogin helper.LoginInput) (_entities.User, error) {
 
 	user, err := us.userRepository.Login(inputLogin.Email)
 

@@ -13,4 +13,5 @@ type Photo struct {
 	Photo_url  string       `json:"photo_url"`
 	Created_at time.Time    `json:"created_at"`
 	Updated_at sql.NullTime `json:"updated_at"`
+	User       User         `json:"user"`
 }

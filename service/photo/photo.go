@@ -2,7 +2,6 @@ package photo
 
 import (
 	"errors"
-	response "final-project-usamah/delivery/helper/response/photo"
 	_entities "final-project-usamah/entities"
 	_photoRepository "final-project-usamah/repository/photo"
 	"time"
@@ -34,7 +33,7 @@ func (ps *PhotoService) CreatePhoto(newPhoto _entities.Photo, idToken int) (_ent
 	return photo, err
 }
 
-func (ps *PhotoService) GetAllPhoto() ([]response.GetPhotoFormatter, error) {
+func (ps *PhotoService) GetAllPhoto() ([]_entities.Photo, error) {
 	photos, err := ps.photoRepository.GetAllPhoto()
 	return photos, err
 }

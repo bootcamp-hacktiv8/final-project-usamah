@@ -3,7 +3,6 @@ package social_media
 import (
 	"context"
 	"database/sql"
-	response "final-project-usamah/delivery/helper/response/social_media"
 	_entities "final-project-usamah/entities"
 	"time"
 
@@ -31,7 +30,7 @@ func (sr *SosmedRepository) CreateSosmed(newSosmed _entities.Social_media) (_ent
 	return newSosmed, id, nil
 }
 
-func (sr *SosmedRepository) GetAllSosmed() ([]response.FormatGetSosmed, error) {
+func (sr *SosmedRepository) GetAllSosmed() ([]_entities.Social_media, error) {
 	query := `SELECT social_medias.id, social_medias.user_id, social_medias.name, social_medias.social_media_url, social_medias.created_at, social_medias.updated_at,
 	users.id, users.email, users.username
 	FROM social_medias
@@ -45,9 +44,9 @@ func (sr *SosmedRepository) GetAllSosmed() ([]response.FormatGetSosmed, error) {
 	}
 	defer rows.Close()
 
-	var sosmeds []response.FormatGetSosmed
+	var sosmeds []_entities.Social_media
 	for rows.Next() {
-		var sosmed response.FormatGetSosmed
+		var sosmed _entities.Social_media
 		err := rows.Scan(&sosmed.Id, &sosmed.User_id, &sosmed.Name, &sosmed.Social_media_url, &sosmed.Created_at, &sosmed.Updated_at, &sosmed.User.Id, &sosmed.User.Email, &sosmed.User.Username)
 		if err != nil {
 			return nil, err

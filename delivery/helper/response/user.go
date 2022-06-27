@@ -9,7 +9,7 @@ type LoginFormatter struct {
 	Token string `json:"token"`
 }
 
-func FormatLogin(token string) LoginFormatter {
+func ResponseLogin(token string) LoginFormatter {
 	formatter := LoginFormatter{
 		Token: token,
 	}
@@ -23,7 +23,7 @@ type UserFormatter struct {
 	Age      int    `json:"age"`
 }
 
-func FormatUser(user entities.User) UserFormatter {
+func ResponseUser(user entities.User) UserFormatter {
 	formatter := UserFormatter{
 		Id:       user.Id,
 		Username: user.Username,
@@ -34,7 +34,7 @@ func FormatUser(user entities.User) UserFormatter {
 	return formatter
 }
 
-type UpdateUser struct {
+type UpdateUserFormatter struct {
 	Id         int       `json:"id"`
 	Username   string    `json:"username"`
 	Email      string    `json:"email"`
@@ -42,8 +42,8 @@ type UpdateUser struct {
 	Updated_at time.Time `json:"updated_at"`
 }
 
-func FormatUpdateUser(user entities.User) UpdateUser {
-	formatter := UpdateUser{
+func ResponseUpdateUser(user entities.User) UpdateUserFormatter {
+	formatter := UpdateUserFormatter{
 		Id:         user.Id,
 		Username:   user.Username,
 		Email:      user.Email,

@@ -12,4 +12,6 @@ type Comment struct {
 	Message    string       `json:"message"`
 	Created_at time.Time    `json:"created_at"`
 	Updated_at sql.NullTime `json:"updated_at"`
+	User       User         `json:"user"`
+	Photo      Photo        `json:"photo"`
 }

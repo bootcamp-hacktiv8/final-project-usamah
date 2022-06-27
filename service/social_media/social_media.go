@@ -2,7 +2,6 @@ package social_media
 
 import (
 	"errors"
-	response "final-project-usamah/delivery/helper/response/social_media"
 	_entities "final-project-usamah/entities"
 	_sosmedRepository "final-project-usamah/repository/social_media"
 	"time"
@@ -34,7 +33,7 @@ func (ss *SosmedService) CreateSosmed(newSosmed _entities.Social_media, idToken 
 	return sosmed, err
 }
 
-func (ss *SosmedService) GetAllSosmed() ([]response.FormatGetSosmed, error) {
+func (ss *SosmedService) GetAllSosmed() ([]_entities.Social_media, error) {
 	sosmeds, err := ss.sosmedRepository.GetAllSosmed()
 	return sosmeds, err
 }

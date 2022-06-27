@@ -2,7 +2,6 @@ package comment
 
 import (
 	"errors"
-	response "final-project-usamah/delivery/helper/response/comment"
 	_entities "final-project-usamah/entities"
 	_commentRepository "final-project-usamah/repository/comment"
 	"time"
@@ -31,7 +30,7 @@ func (cs *CommentService) CreateComment(newComment _entities.Comment, idToken in
 	return comment, err
 }
 
-func (cs *CommentService) GetAllComment() ([]response.FormatGetComment, error) {
+func (cs *CommentService) GetAllComment() ([]_entities.Comment, error) {
 	comments, err := cs.commentRepository.GetAllComment()
 	return comments, err
 }

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	_helper "final-project-usamah/delivery/helper"
-	_response "final-project-usamah/delivery/helper/response/comment"
+	_response "final-project-usamah/delivery/helper/response"
 	"final-project-usamah/delivery/middlewares"
 	_entities "final-project-usamah/entities"
 	_commentService "final-project-usamah/service/comment"
@@ -39,7 +39,7 @@ func (ch *CommentHandler) CreateCommentHandler(w http.ResponseWriter, r *http.Re
 
 	comment, err := ch.commentService.CreateComment(newComment, userLogin.Id)
 
-	commentResponse := _response.FormatComment(comment)
+	commentResponse := _response.ResponseComment(comment)
 
 	if err != nil {
 		response, _ := json.Marshal(_helper.APIResponseFailed(err.Error()))
@@ -56,6 +56,7 @@ func (ch *CommentHandler) CreateCommentHandler(w http.ResponseWriter, r *http.Re
 
 func (ch *CommentHandler) GetAllCommentHandler(w http.ResponseWriter, r *http.Request) {
 	comments, err := ch.commentService.GetAllComment()
+	responseComments := _response.ResponseGetComment(comments)
 	switch {
 	case err == sql.ErrNoRows:
 		response, _ := json.Marshal(_helper.APIResponseFailed("data not found"))
@@ -68,7 +69,7 @@ func (ch *CommentHandler) GetAllCommentHandler(w http.ResponseWriter, r *http.Re
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(response)
 	default:
-		response, _ := json.Marshal(_helper.APIResponseSuccess("success get all comment", comments))
+		response, _ := json.Marshal(_helper.APIResponseSuccess("success get all comment", responseComments))
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(response)
@@ -94,7 +95,7 @@ func (ch *CommentHandler) UpdateCommentHandler(w http.ResponseWriter, r *http.Re
 	}
 
 	comment, err := ch.commentService.UpdateComment(updateComment, id, userLogin.Id)
-	commentResponse := _response.FormatUpdateComment(comment)
+	commentResponse := _response.ResponseUpdateComment(comment)
 	switch {
 	case err == sql.ErrNoRows: //check data is null?
 		response, _ := json.Marshal(_helper.APIResponseFailed("data not found"))

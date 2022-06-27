@@ -14,7 +14,7 @@ type PhotoFormatter struct {
 	Created_at time.Time `json:"created_at"`
 }
 
-func FormatPhoto(photo entities.Photo) PhotoFormatter {
+func ResponsePhoto(photo entities.Photo) PhotoFormatter {
 	formatter := PhotoFormatter{
 		Id:         photo.Id,
 		Title:      photo.Title,
@@ -41,7 +41,28 @@ type GetPhotoFormatter struct {
 	User       GetPhotoUser `json:"user"`
 }
 
-type UpdatePhoto struct {
+func ResponseGetPhoto(photo []entities.Photo) []GetPhotoFormatter {
+	var photos []GetPhotoFormatter
+	for i := 0; i < len(photos); i++ {
+		photo := GetPhotoFormatter{
+			Id:         photo[i].Id,
+			User_id:    photo[i].User_id,
+			Title:      photo[i].Title,
+			Caption:    photo[i].Caption,
+			Photo_url:  photo[i].Photo_url,
+			Created_at: photo[i].Created_at,
+			Updated_at: photo[i].Updated_at,
+			User: GetPhotoUser{
+				Username: photo[i].User.Username,
+				Email:    photo[i].User.Email,
+			},
+		}
+		photos = append(photos, photo)
+	}
+	return photos
+}
+
+type UpdatePhotoFormatter struct {
 	Id         int          `json:"id"`
 	User_id    int          `json:"user_id"`
 	Title      string       `json:"title"`
@@ -50,8 +71,8 @@ type UpdatePhoto struct {
 	Updated_at sql.NullTime `json:"updated_at"`
 }
 
-func FormatUpdatePhoto(photo entities.Photo) UpdatePhoto {
-	formatter := UpdatePhoto{
+func ResponseUpdatePhoto(photo entities.Photo) UpdatePhotoFormatter {
+	formatter := UpdatePhotoFormatter{
 		Id:         photo.Id,
 		User_id:    photo.User_id,
 		Title:      photo.Title,

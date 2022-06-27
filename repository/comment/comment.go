@@ -3,7 +3,6 @@ package comment
 import (
 	"context"
 	"database/sql"
-	response "final-project-usamah/delivery/helper/response/comment"
 	_entities "final-project-usamah/entities"
 	"time"
 
@@ -31,7 +30,7 @@ func (cr *CommentRepository) CreateComment(newComment _entities.Comment) (_entit
 	return newComment, id, nil
 }
 
-func (cr *CommentRepository) GetAllComment() ([]response.FormatGetComment, error) {
+func (cr *CommentRepository) GetAllComment() ([]_entities.Comment, error) {
 	query := `SELECT comments.id, comments.user_id, comments.photo_id, comments.message, comments.created_at, comments.updated_at,
 	users.id, users.email, users.username, photos.id, photos.user_id, photos.title, photos.caption, photos.photo_url
 	FROM comments
@@ -46,9 +45,9 @@ func (cr *CommentRepository) GetAllComment() ([]response.FormatGetComment, error
 	}
 	defer rows.Close()
 
-	var comments []response.FormatGetComment
+	var comments []_entities.Comment
 	for rows.Next() {
-		var comment response.FormatGetComment
+		var comment _entities.Comment
 		err := rows.Scan(&comment.Id, &comment.User_id, &comment.Photo_id, &comment.Message, &comment.Created_at, &comment.Updated_at, &comment.User.Id, &comment.User.Email, &comment.User.Username, &comment.Photo.Id, &comment.Photo.User_id, &comment.Photo.Title, &comment.Photo.Caption, &comment.Photo.Photo_url)
 		if err != nil {
 			return nil, err

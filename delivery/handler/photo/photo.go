@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	_helper "final-project-usamah/delivery/helper"
-	_response "final-project-usamah/delivery/helper/response/photo"
+	_response "final-project-usamah/delivery/helper/response"
 	"final-project-usamah/delivery/middlewares"
 	_entities "final-project-usamah/entities"
 	_photoService "final-project-usamah/service/photo"
@@ -39,7 +39,7 @@ func (ph *PhotoHandler) CreatePhotoHandler(w http.ResponseWriter, r *http.Reques
 
 	photo, err := ph.photoService.CreatePhoto(newPhoto, userLogin.Id)
 
-	photoResponse := _response.FormatPhoto(photo)
+	photoResponse := _response.ResponsePhoto(photo)
 
 	if err != nil {
 		response, _ := json.Marshal(_helper.APIResponseFailed(err.Error()))
@@ -56,6 +56,7 @@ func (ph *PhotoHandler) CreatePhotoHandler(w http.ResponseWriter, r *http.Reques
 
 func (ph *PhotoHandler) GetAllPhotoHandler(w http.ResponseWriter, r *http.Request) {
 	photos, err := ph.photoService.GetAllPhoto()
+	responsePhotos := _response.ResponseGetPhoto(photos)
 	switch {
 	case err == sql.ErrNoRows:
 		response, _ := json.Marshal(_helper.APIResponseFailed("data not found"))
@@ -68,7 +69,7 @@ func (ph *PhotoHandler) GetAllPhotoHandler(w http.ResponseWriter, r *http.Reques
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(response)
 	default:
-		response, _ := json.Marshal(_helper.APIResponseSuccess("success get all photo", photos))
+		response, _ := json.Marshal(_helper.APIResponseSuccess("success get all photo", responsePhotos))
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(response)
@@ -94,7 +95,7 @@ func (ph *PhotoHandler) UpdatePhotoHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	photo, err := ph.photoService.UpdatePhoto(updatePhoto, id, userLogin.Id)
-	photoResponse := _response.FormatUpdatePhoto(photo)
+	photoResponse := _response.ResponseUpdatePhoto(photo)
 	switch {
 	case err == sql.ErrNoRows: //check data is null?
 		response, _ := json.Marshal(_helper.APIResponseFailed("data not found"))

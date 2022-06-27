@@ -14,7 +14,7 @@ type CommentFormatter struct {
 	Created_at time.Time `json:"created_at"`
 }
 
-func FormatComment(comment entities.Comment) CommentFormatter {
+func ResponseComment(comment entities.Comment) CommentFormatter {
 	formatter := CommentFormatter{
 		Id:         comment.Id,
 		User_id:    comment.User_id,
@@ -39,7 +39,7 @@ type GetCommentPhoto struct {
 	Photo_url string `json:"photo_url"`
 }
 
-type FormatGetComment struct {
+type GetCommentFormatter struct {
 	Id         int             `json:"id"`
 	User_id    int             `json:"user_id"`
 	Photo_id   int             `json:"photo_id"`
@@ -50,7 +50,34 @@ type FormatGetComment struct {
 	Photo      GetCommentPhoto `json:"photo"`
 }
 
-type UpdateComment struct {
+func ResponseGetComment(comment []entities.Comment) []GetCommentFormatter {
+	var comments []GetCommentFormatter
+	for i := 0; i < len(comment); i++ {
+		comment := GetCommentFormatter{
+			Id:         comment[i].Id,
+			User_id:    comment[i].User_id,
+			Photo_id:   comment[i].Photo_id,
+			Message:    comment[i].Message,
+			Created_at: comment[i].Created_at,
+			User: GetCommentUser{
+				Id:       comment[i].User.Id,
+				Username: comment[i].User.Username,
+				Email:    comment[i].User.Email,
+			},
+			Photo: GetCommentPhoto{
+				Id:        comment[i].Photo.Id,
+				User_id:   comment[i].Photo.User_id,
+				Title:     comment[i].Photo.Title,
+				Caption:   comment[i].Photo.Caption,
+				Photo_url: comment[i].Photo.Photo_url,
+			},
+		}
+		comments = append(comments, comment)
+	}
+	return comments
+}
+
+type UpdateCommentFormatter struct {
 	Id         int          `json:"id"`
 	User_id    int          `json:"user_id"`
 	Photo_id   int          `json:"photo_id"`
@@ -58,8 +85,8 @@ type UpdateComment struct {
 	Updated_at sql.NullTime `json:"updated_at"`
 }
 
-func FormatUpdateComment(comment entities.Comment) UpdateComment {
-	formatter := UpdateComment{
+func ResponseUpdateComment(comment entities.Comment) UpdateCommentFormatter {
+	formatter := UpdateCommentFormatter{
 		Id:         comment.Id,
 		User_id:    comment.User_id,
 		Photo_id:   comment.Photo_id,

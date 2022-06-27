@@ -3,8 +3,7 @@ package user
 import (
 	"encoding/json"
 	_helper "final-project-usamah/delivery/helper"
-	_request "final-project-usamah/delivery/helper/request/user"
-	_response "final-project-usamah/delivery/helper/response/user"
+	_response "final-project-usamah/delivery/helper/response"
 	"final-project-usamah/delivery/middlewares"
 	_entities "final-project-usamah/entities"
 	_userService "final-project-usamah/service/user"
@@ -32,7 +31,7 @@ func (uh *UserHandler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 
 	user, err := uh.userService.Register(newUser)
 
-	userResponse := _response.FormatUser(user)
+	userResponse := _response.ResponseUser(user)
 
 	if err != nil {
 		response, _ := json.Marshal(_helper.APIResponseFailed(err.Error()))
@@ -49,7 +48,7 @@ func (uh *UserHandler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 
 func (uh *UserHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	//proses request body dari user
-	var inputLogin _request.FormatLogin
+	var inputLogin _helper.LoginInput
 
 	errDecode := json.NewDecoder(r.Body).Decode(&inputLogin)
 	if errDecode != nil {
@@ -75,7 +74,7 @@ func (uh *UserHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responseLogin := _response.FormatLogin(token)
+	responseLogin := _response.ResponseLogin(token)
 	response, _ := json.Marshal(_helper.APIResponseSuccess("success login", responseLogin))
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -96,7 +95,7 @@ func (uh *UserHandler) UpdateUserHandler(w http.ResponseWriter, r *http.Request)
 	}
 
 	user, err := uh.userService.UpdateUser(updateUser, userLogin.Id)
-	userResponse := _response.FormatUpdateUser(user)
+	userResponse := _response.ResponseUpdateUser(user)
 	switch {
 	case err != nil:
 		response, _ := json.Marshal(_helper.APIResponseFailed(err.Error()))

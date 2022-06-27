@@ -3,7 +3,6 @@ package photo
 import (
 	"context"
 	"database/sql"
-	response "final-project-usamah/delivery/helper/response/photo"
 	_entities "final-project-usamah/entities"
 	"time"
 
@@ -31,7 +30,7 @@ func (pr *PhotoRepository) CreatePhoto(newPhoto _entities.Photo) (_entities.Phot
 	return newPhoto, id, nil
 }
 
-func (pr *PhotoRepository) GetAllPhoto() ([]response.GetPhotoFormatter, error) {
+func (pr *PhotoRepository) GetAllPhoto() ([]_entities.Photo, error) {
 	query := `SELECT photos.id, photos.user_id, photos.title, photos.caption, photos.photo_url,
 	photos.created_at, photos.updated_at, users.email, users.username
 	FROM photos
@@ -45,9 +44,9 @@ func (pr *PhotoRepository) GetAllPhoto() ([]response.GetPhotoFormatter, error) {
 	}
 	defer rows.Close()
 
-	var photos []response.GetPhotoFormatter
+	var photos []_entities.Photo
 	for rows.Next() {
-		var photo response.GetPhotoFormatter
+		var photo _entities.Photo
 		err := rows.Scan(&photo.Id, &photo.User_id, &photo.Title, &photo.Caption, &photo.Photo_url, &photo.Created_at, &photo.Updated_at, &photo.User.Email, &photo.User.Username)
 		if err != nil {
 			return nil, err

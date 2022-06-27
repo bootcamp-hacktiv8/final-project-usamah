@@ -14,7 +14,7 @@ type SocialMediaFormatter struct {
 	Created_at       time.Time `json:"created_at"`
 }
 
-func FormatSocialMedia(socialMedia entities.Social_media) SocialMediaFormatter {
+func ResponseSocialMedia(socialMedia entities.Social_media) SocialMediaFormatter {
 	formatter := SocialMediaFormatter{
 		Id:               socialMedia.Id,
 		User_id:          socialMedia.User_id,
@@ -31,7 +31,7 @@ type GetSosmedUser struct {
 	Email    string `json:"email"`
 }
 
-type FormatGetSosmed struct {
+type GetSosmedFormatter struct {
 	Id               int           `json:"id"`
 	User_id          int           `json:"user_id"`
 	Name             string        `json:"name"`
@@ -41,7 +41,29 @@ type FormatGetSosmed struct {
 	User             GetSosmedUser `json:"user"`
 }
 
-type UpdateSosmed struct {
+func ResponseGetSocialMedia(socialMedia []entities.Social_media) []GetSosmedFormatter {
+	var sosmeds []GetSosmedFormatter
+
+	for i := 0; i < len(socialMedia); i++ {
+		sosmed := GetSosmedFormatter{
+			Id:               socialMedia[i].Id,
+			User_id:          socialMedia[i].User_id,
+			Name:             socialMedia[i].Name,
+			Social_media_url: socialMedia[i].Social_media_url,
+			Created_at:       socialMedia[i].Created_at,
+			Updated_at:       socialMedia[i].Updated_at,
+			User: GetSosmedUser{
+				Id:       socialMedia[i].User.Id,
+				Username: socialMedia[i].User.Username,
+				Email:    socialMedia[i].User.Email,
+			},
+		}
+		sosmeds = append(sosmeds, sosmed)
+	}
+	return sosmeds
+}
+
+type UpdateSosmedFormatter struct {
 	Id               int          `json:"id"`
 	User_id          int          `json:"user_id"`
 	Name             string       `json:"name"`
@@ -49,8 +71,8 @@ type UpdateSosmed struct {
 	Updated_at       sql.NullTime `json:"updated_at"`
 }
 
-func FormatUpdateSosmed(sosmed entities.Social_media) UpdateSosmed {
-	formatter := UpdateSosmed{
+func ResponseUpdateSosmed(sosmed entities.Social_media) UpdateSosmedFormatter {
+	formatter := UpdateSosmedFormatter{
 		Id:               sosmed.Id,
 		User_id:          sosmed.User_id,
 		Name:             sosmed.Name,

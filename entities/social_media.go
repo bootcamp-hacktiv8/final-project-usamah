@@ -12,4 +12,5 @@ type Social_media struct {
 	Social_media_url string       `json:"social_media_url"`
 	Created_at       time.Time    `json:"created_at"`
 	Updated_at       sql.NullTime `json:"updated_at"`
+	User             User         `json:"user"`
 }

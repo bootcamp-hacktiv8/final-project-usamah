@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	_helper "final-project-usamah/delivery/helper"
-	_response "final-project-usamah/delivery/helper/response/social_media"
+	_response "final-project-usamah/delivery/helper/response"
 	"final-project-usamah/delivery/middlewares"
 	_entities "final-project-usamah/entities"
 	_sosmedService "final-project-usamah/service/social_media"
@@ -39,7 +39,7 @@ func (sh *SosmedHandler) CreateSosmedHandler(w http.ResponseWriter, r *http.Requ
 
 	sosmed, err := sh.sosmedService.CreateSosmed(newSosmed, userLogin.Id)
 
-	sosmedResponse := _response.FormatSocialMedia(sosmed)
+	sosmedResponse := _response.ResponseSocialMedia(sosmed)
 
 	if err != nil {
 		response, _ := json.Marshal(_helper.APIResponseFailed(err.Error()))
@@ -56,6 +56,7 @@ func (sh *SosmedHandler) CreateSosmedHandler(w http.ResponseWriter, r *http.Requ
 
 func (sh *SosmedHandler) GetAllSosmedHandler(w http.ResponseWriter, r *http.Request) {
 	sosmeds, err := sh.sosmedService.GetAllSosmed()
+	responseSosmeds := _response.ResponseGetSocialMedia(sosmeds)
 	switch {
 	case err == sql.ErrNoRows:
 		response, _ := json.Marshal(_helper.APIResponseFailed("data not found"))
@@ -68,7 +69,7 @@ func (sh *SosmedHandler) GetAllSosmedHandler(w http.ResponseWriter, r *http.Requ
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(response)
 	default:
-		response, _ := json.Marshal(_helper.APIResponseSuccess("success get all social_media", sosmeds))
+		response, _ := json.Marshal(_helper.APIResponseSuccess("success get all social_media", responseSosmeds))
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(response)
@@ -94,7 +95,7 @@ func (sh *SosmedHandler) UpdateSosmedHandler(w http.ResponseWriter, r *http.Requ
 	}
 
 	sosmed, err := sh.sosmedService.UpdateSosmed(updateSosmed, id, userLogin.Id)
-	sosmedResponse := _response.FormatUpdateSosmed(sosmed)
+	sosmedResponse := _response.ResponseUpdateSosmed(sosmed)
 	switch {
 	case err == sql.ErrNoRows: //check data is null?
 		response, _ := json.Marshal(_helper.APIResponseFailed("data not found"))
