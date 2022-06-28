@@ -1,6 +1,7 @@
 package social_media
 
 import (
+	"context"
 	"errors"
 	_entities "final-project-usamah/entities"
 	_socmedRepository "final-project-usamah/repository/social_media"
@@ -17,7 +18,7 @@ func NewSocmedService(socmedRepository _socmedRepository.SocmedRepositoryInterfa
 	}
 }
 
-func (ss *SocmedService) CreateSocmed(newSocmed _entities.Social_media, idToken int) (_entities.Social_media, error) {
+func (ss *SocmedService) CreateSocmed(ctx context.Context, newSocmed _entities.Social_media, idToken int) (_entities.Social_media, error) {
 	//validasi saat create sosmed
 	if newSocmed.Name == "" {
 		return newSocmed, errors.New("name is required")
@@ -28,18 +29,18 @@ func (ss *SocmedService) CreateSocmed(newSocmed _entities.Social_media, idToken 
 
 	newSocmed.User_id = idToken
 	newSocmed.Created_at = time.Now()
-	socmed, id, err := ss.socmedRepository.CreateSocmed(newSocmed)
+	socmed, id, err := ss.socmedRepository.CreateSocmed(ctx, newSocmed)
 	socmed.Id = id
 	return socmed, err
 }
 
-func (ss *SocmedService) GetAllSocmed() ([]_entities.Social_media, error) {
-	socmeds, err := ss.socmedRepository.GetAllSocmed()
+func (ss *SocmedService) GetAllSocmed(ctx context.Context) ([]_entities.Social_media, error) {
+	socmeds, err := ss.socmedRepository.GetAllSocmed(ctx)
 	return socmeds, err
 }
 
-func (ss *SocmedService) UpdateSocmed(updateSocmed _entities.Social_media, idSocmed int, idToken int) (_entities.Social_media, error) {
-	getSocmed, err := ss.socmedRepository.GetSocmed(idSocmed)
+func (ss *SocmedService) UpdateSocmed(ctx context.Context, updateSocmed _entities.Social_media, idSocmed int, idToken int) (_entities.Social_media, error) {
+	getSocmed, err := ss.socmedRepository.GetSocmed(ctx, idSocmed)
 	if err != nil {
 		return getSocmed, err
 	}
@@ -57,14 +58,14 @@ func (ss *SocmedService) UpdateSocmed(updateSocmed _entities.Social_media, idSoc
 		getSocmed.Social_media_url = updateSocmed.Social_media_url
 	}
 
-	socmed, err := ss.socmedRepository.UpdateSocmed(getSocmed, idSocmed)
+	socmed, err := ss.socmedRepository.UpdateSocmed(ctx, getSocmed, idSocmed)
 	socmed.Id = idSocmed
 	socmed.Updated_at.Time = time.Now()
 	return socmed, err
 }
 
-func (ss *SocmedService) DeleteSocmed(idSocmed int, idToken int) error {
-	socmed, errGetSocmed := ss.socmedRepository.GetSocmed(idSocmed)
+func (ss *SocmedService) DeleteSocmed(ctx context.Context, idSocmed int, idToken int) error {
+	socmed, errGetSocmed := ss.socmedRepository.GetSocmed(ctx, idSocmed)
 	if errGetSocmed != nil {
 		return errGetSocmed
 	}
@@ -73,6 +74,6 @@ func (ss *SocmedService) DeleteSocmed(idSocmed int, idToken int) error {
 		return errors.New("unauthorized")
 	}
 
-	err := ss.socmedRepository.DeleteSocmed(idSocmed)
+	err := ss.socmedRepository.DeleteSocmed(ctx, idSocmed)
 	return err
 }

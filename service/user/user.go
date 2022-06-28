@@ -1,6 +1,7 @@
 package user
 
 import (
+	"context"
 	"errors"
 	"final-project-usamah/delivery/helper"
 	_entities "final-project-usamah/entities"
@@ -19,7 +20,7 @@ func NewUserService(userRepository _userRepository.UserRepositoryInterface) User
 	}
 }
 
-func (us *UserService) Register(user _entities.User) (_entities.User, error) {
+func (us *UserService) Register(ctx context.Context, user _entities.User) (_entities.User, error) {
 	//validasi saat registrasi
 	if user.Username == "" {
 		return user, errors.New("name is required")
@@ -46,14 +47,14 @@ func (us *UserService) Register(user _entities.User) (_entities.User, error) {
 	password, _ := helper.HashPassword(user.Password)
 	user.Password = password
 
-	newUser, id, err := us.userRepository.Register(user)
+	newUser, id, err := us.userRepository.Register(ctx, user)
 	newUser.Id = id
 	return newUser, err
 }
 
-func (us *UserService) Login(inputLogin helper.LoginInput) (_entities.User, error) {
+func (us *UserService) Login(ctx context.Context, inputLogin helper.LoginInput) (_entities.User, error) {
 
-	user, err := us.userRepository.Login(inputLogin.Email)
+	user, err := us.userRepository.Login(ctx, inputLogin.Email)
 
 	if user.Email == "" {
 		return user, errors.New("email incorrect")
@@ -67,13 +68,13 @@ func (us *UserService) Login(inputLogin helper.LoginInput) (_entities.User, erro
 	return user, err
 }
 
-func (us *UserService) GetUser(idToken int) (_entities.User, error) {
-	user, err := us.userRepository.GetUser(idToken)
+func (us *UserService) GetUser(ctx context.Context, idToken int) (_entities.User, error) {
+	user, err := us.userRepository.GetUser(ctx, idToken)
 	return user, err
 }
 
-func (us *UserService) UpdateUser(updateUser _entities.User, idToken int) (_entities.User, error) {
-	getUser, err := us.userRepository.GetUser(idToken)
+func (us *UserService) UpdateUser(ctx context.Context, updateUser _entities.User, idToken int) (_entities.User, error) {
+	getUser, err := us.userRepository.GetUser(ctx, idToken)
 	if err != nil {
 		return getUser, err
 	}
@@ -95,13 +96,13 @@ func (us *UserService) UpdateUser(updateUser _entities.User, idToken int) (_enti
 		getUser.Age = updateUser.Age
 	}
 
-	user, err := us.userRepository.UpdateUser(getUser, idToken)
+	user, err := us.userRepository.UpdateUser(ctx, getUser, idToken)
 	user.Id = idToken
 	user.Updated_at = time.Now()
 	return user, err
 }
 
-func (us *UserService) DeleteUser(idToken int) error {
-	err := us.userRepository.DeleteUser(idToken)
+func (us *UserService) DeleteUser(ctx context.Context, idToken int) error {
+	err := us.userRepository.DeleteUser(ctx, idToken)
 	return err
 }

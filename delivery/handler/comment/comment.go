@@ -37,7 +37,7 @@ func (ch *CommentHandler) CreateCommentHandler(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	comment, err := ch.commentService.CreateComment(newComment, userLogin.Id)
+	comment, err := ch.commentService.CreateComment(ctx, newComment, userLogin.Id)
 
 	commentResponse := _response.ResponseComment(comment)
 
@@ -55,7 +55,7 @@ func (ch *CommentHandler) CreateCommentHandler(w http.ResponseWriter, r *http.Re
 }
 
 func (ch *CommentHandler) GetAllCommentHandler(w http.ResponseWriter, r *http.Request) {
-	comments, err := ch.commentService.GetAllComment()
+	comments, err := ch.commentService.GetAllComment(r.Context())
 	responseComments := _response.ResponseGetComment(comments)
 	switch {
 	case err == sql.ErrNoRows:
@@ -94,7 +94,7 @@ func (ch *CommentHandler) UpdateCommentHandler(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	comment, err := ch.commentService.UpdateComment(updateComment, id, userLogin.Id)
+	comment, err := ch.commentService.UpdateComment(ctx, updateComment, id, userLogin.Id)
 	commentResponse := _response.ResponseUpdateComment(comment)
 	switch {
 	case err == sql.ErrNoRows: //check data is null?
@@ -125,7 +125,7 @@ func (ch *CommentHandler) DeleteCommentHandler(w http.ResponseWriter, r *http.Re
 	ctx := r.Context()
 	userLogin := middlewares.ForContext(ctx)
 
-	err := ch.commentService.DeleteComment(id, userLogin.Id)
+	err := ch.commentService.DeleteComment(ctx, id, userLogin.Id)
 	switch {
 	case err == sql.ErrNoRows: //check data is null?
 		response, _ := json.Marshal(_helper.APIResponseFailed("data not found"))

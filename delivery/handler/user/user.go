@@ -29,7 +29,7 @@ func (uh *UserHandler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := uh.userService.Register(newUser)
+	user, err := uh.userService.Register(r.Context(), newUser)
 
 	userResponse := _response.ResponseUser(user)
 
@@ -56,7 +56,7 @@ func (uh *UserHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, errLogin := uh.userService.Login(inputLogin)
+	user, errLogin := uh.userService.Login(r.Context(), inputLogin)
 	if errLogin != nil {
 		response, _ := json.Marshal(_helper.APIResponseFailed(errLogin.Error()))
 		w.Header().Set("Content-Type", "application/json")
@@ -94,7 +94,7 @@ func (uh *UserHandler) UpdateUserHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	user, err := uh.userService.UpdateUser(updateUser, userLogin.Id)
+	user, err := uh.userService.UpdateUser(ctx, updateUser, userLogin.Id)
 	userResponse := _response.ResponseUpdateUser(user)
 	switch {
 	case err != nil:
@@ -115,7 +115,7 @@ func (uh *UserHandler) DeleteUserHandler(w http.ResponseWriter, r *http.Request)
 	ctx := r.Context()
 	userLogin := middlewares.ForContext(ctx)
 
-	err := uh.userService.DeleteUser(userLogin.Id)
+	err := uh.userService.DeleteUser(ctx, userLogin.Id)
 	switch {
 	case err != nil:
 		response, _ := json.Marshal(_helper.APIResponseFailed(err.Error()))

@@ -1,12 +1,13 @@
 package photo
 
 import (
+	"context"
 	_entities "final-project-usamah/entities"
 )
 
 type PhotoServiceInterface interface {
-	CreatePhoto(newPhoto _entities.Photo, idToken int) (_entities.Photo, error)
-	GetAllPhoto() ([]_entities.Photo, error)
-	UpdatePhoto(updatePhoto _entities.Photo, idPhoto int, idToken int) (_entities.Photo, error)
-	DeletePhoto(idPhoto int, idToken int) error
+	CreatePhoto(ctx context.Context, newPhoto _entities.Photo, idToken int) (_entities.Photo, error)
+	GetAllPhoto(ctx context.Context) ([]_entities.Photo, error)
+	UpdatePhoto(ctx context.Context, updatePhoto _entities.Photo, idPhoto int, idToken int) (_entities.Photo, error)
+	DeletePhoto(ctx context.Context, idPhoto int, idToken int) error
 }

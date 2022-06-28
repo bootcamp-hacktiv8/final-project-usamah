@@ -37,7 +37,7 @@ func (ph *PhotoHandler) CreatePhotoHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	photo, err := ph.photoService.CreatePhoto(newPhoto, userLogin.Id)
+	photo, err := ph.photoService.CreatePhoto(ctx, newPhoto, userLogin.Id)
 
 	photoResponse := _response.ResponsePhoto(photo)
 
@@ -55,7 +55,7 @@ func (ph *PhotoHandler) CreatePhotoHandler(w http.ResponseWriter, r *http.Reques
 }
 
 func (ph *PhotoHandler) GetAllPhotoHandler(w http.ResponseWriter, r *http.Request) {
-	photos, err := ph.photoService.GetAllPhoto()
+	photos, err := ph.photoService.GetAllPhoto(r.Context())
 	responsePhotos := _response.ResponseGetPhoto(photos)
 	switch {
 	case err == sql.ErrNoRows:
@@ -94,7 +94,7 @@ func (ph *PhotoHandler) UpdatePhotoHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	photo, err := ph.photoService.UpdatePhoto(updatePhoto, id, userLogin.Id)
+	photo, err := ph.photoService.UpdatePhoto(ctx, updatePhoto, id, userLogin.Id)
 	photoResponse := _response.ResponseUpdatePhoto(photo)
 	switch {
 	case err == sql.ErrNoRows: //check data is null?
@@ -125,7 +125,7 @@ func (ph *PhotoHandler) DeletePhotoHandler(w http.ResponseWriter, r *http.Reques
 	ctx := r.Context()
 	userLogin := middlewares.ForContext(ctx)
 
-	err := ph.photoService.DeletePhoto(id, userLogin.Id)
+	err := ph.photoService.DeletePhoto(ctx, id, userLogin.Id)
 	switch {
 	case err == sql.ErrNoRows: //check data is null?
 		response, _ := json.Marshal(_helper.APIResponseFailed("data not found"))

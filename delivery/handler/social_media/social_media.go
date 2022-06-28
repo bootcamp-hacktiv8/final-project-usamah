@@ -37,7 +37,7 @@ func (sh *SocmedHandler) CreateSocmedHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	socmed, err := sh.socmedService.CreateSocmed(newSocmed, userLogin.Id)
+	socmed, err := sh.socmedService.CreateSocmed(ctx, newSocmed, userLogin.Id)
 
 	socmedResponse := _response.ResponseSocialMedia(socmed)
 
@@ -55,7 +55,7 @@ func (sh *SocmedHandler) CreateSocmedHandler(w http.ResponseWriter, r *http.Requ
 }
 
 func (sh *SocmedHandler) GetAllSocmedHandler(w http.ResponseWriter, r *http.Request) {
-	socmeds, err := sh.socmedService.GetAllSocmed()
+	socmeds, err := sh.socmedService.GetAllSocmed(r.Context())
 	responseSocmeds := _response.ResponseGetSocialMedia(socmeds)
 	switch {
 	case err == sql.ErrNoRows:
@@ -94,7 +94,7 @@ func (sh *SocmedHandler) UpdateSocmedHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	socmed, err := sh.socmedService.UpdateSocmed(updateSocmed, id, userLogin.Id)
+	socmed, err := sh.socmedService.UpdateSocmed(ctx, updateSocmed, id, userLogin.Id)
 	socmedResponse := _response.ResponseUpdateSocmed(socmed)
 	switch {
 	case err == sql.ErrNoRows: //check data is null?
@@ -125,7 +125,7 @@ func (sh *SocmedHandler) DeleteSocmedHandler(w http.ResponseWriter, r *http.Requ
 	ctx := r.Context()
 	userLogin := middlewares.ForContext(ctx)
 
-	err := sh.socmedService.DeleteSocmed(id, userLogin.Id)
+	err := sh.socmedService.DeleteSocmed(ctx, id, userLogin.Id)
 	switch {
 	case err == sql.ErrNoRows: //check data is null?
 		response, _ := json.Marshal(_helper.APIResponseFailed("data not found"))

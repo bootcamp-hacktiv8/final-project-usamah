@@ -1,6 +1,7 @@
 package photo
 
 import (
+	"context"
 	"errors"
 	_entities "final-project-usamah/entities"
 	_photoRepository "final-project-usamah/repository/photo"
@@ -17,7 +18,7 @@ func NewPhotoService(photoRepository _photoRepository.PhotoRepositoryInterface) 
 	}
 }
 
-func (ps *PhotoService) CreatePhoto(newPhoto _entities.Photo, idToken int) (_entities.Photo, error) {
+func (ps *PhotoService) CreatePhoto(ctx context.Context, newPhoto _entities.Photo, idToken int) (_entities.Photo, error) {
 	//validasi saat create photo
 	if newPhoto.Title == "" {
 		return newPhoto, errors.New("title is required")
@@ -27,19 +28,19 @@ func (ps *PhotoService) CreatePhoto(newPhoto _entities.Photo, idToken int) (_ent
 	}
 
 	newPhoto.User_id = idToken
-	photo, id, err := ps.photoRepository.CreatePhoto(newPhoto)
+	photo, id, err := ps.photoRepository.CreatePhoto(ctx, newPhoto)
 	photo.Id = id
 	photo.Created_at = time.Now()
 	return photo, err
 }
 
-func (ps *PhotoService) GetAllPhoto() ([]_entities.Photo, error) {
-	photos, err := ps.photoRepository.GetAllPhoto()
+func (ps *PhotoService) GetAllPhoto(ctx context.Context) ([]_entities.Photo, error) {
+	photos, err := ps.photoRepository.GetAllPhoto(ctx)
 	return photos, err
 }
 
-func (ps *PhotoService) UpdatePhoto(updatePhoto _entities.Photo, idPhoto int, idToken int) (_entities.Photo, error) {
-	getPhoto, err := ps.photoRepository.GetPhoto(idPhoto)
+func (ps *PhotoService) UpdatePhoto(ctx context.Context, updatePhoto _entities.Photo, idPhoto int, idToken int) (_entities.Photo, error) {
+	getPhoto, err := ps.photoRepository.GetPhoto(ctx, idPhoto)
 	if err != nil {
 		return getPhoto, err
 	}
@@ -61,14 +62,14 @@ func (ps *PhotoService) UpdatePhoto(updatePhoto _entities.Photo, idPhoto int, id
 
 	}
 
-	photo, err := ps.photoRepository.UpdatePhoto(getPhoto, idPhoto)
+	photo, err := ps.photoRepository.UpdatePhoto(ctx, getPhoto, idPhoto)
 	photo.Id = idPhoto
 	photo.Updated_at.Time = time.Now()
 	return photo, err
 }
 
-func (ps *PhotoService) DeletePhoto(idPhoto int, idToken int) error {
-	photo, errGetPhoto := ps.photoRepository.GetPhoto(idPhoto)
+func (ps *PhotoService) DeletePhoto(ctx context.Context, idPhoto int, idToken int) error {
+	photo, errGetPhoto := ps.photoRepository.GetPhoto(ctx, idPhoto)
 	if errGetPhoto != nil {
 		return errGetPhoto
 	}
@@ -77,6 +78,6 @@ func (ps *PhotoService) DeletePhoto(idPhoto int, idToken int) error {
 		return errors.New("unauthorized")
 	}
 
-	err := ps.photoRepository.DeletePhoto(idPhoto)
+	err := ps.photoRepository.DeletePhoto(ctx, idPhoto)
 	return err
 }
