@@ -3,76 +3,76 @@ package social_media
 import (
 	"errors"
 	_entities "final-project-usamah/entities"
-	_sosmedRepository "final-project-usamah/repository/social_media"
+	_socmedRepository "final-project-usamah/repository/social_media"
 	"time"
 )
 
-type SosmedService struct {
-	sosmedRepository _sosmedRepository.SosmedRepositoryInterface
+type SocmedService struct {
+	socmedRepository _socmedRepository.SocmedRepositoryInterface
 }
 
-func NewSosmedService(sosmedRepository _sosmedRepository.SosmedRepositoryInterface) SosmedServiceInterface {
-	return &SosmedService{
-		sosmedRepository: sosmedRepository,
+func NewSocmedService(socmedRepository _socmedRepository.SocmedRepositoryInterface) SocmedServiceInterface {
+	return &SocmedService{
+		socmedRepository: socmedRepository,
 	}
 }
 
-func (ss *SosmedService) CreateSosmed(newSosmed _entities.Social_media, idToken int) (_entities.Social_media, error) {
+func (ss *SocmedService) CreateSocmed(newSocmed _entities.Social_media, idToken int) (_entities.Social_media, error) {
 	//validasi saat create sosmed
-	if newSosmed.Name == "" {
-		return newSosmed, errors.New("name is required")
+	if newSocmed.Name == "" {
+		return newSocmed, errors.New("name is required")
 	}
-	if newSosmed.Social_media_url == "" {
-		return newSosmed, errors.New("social_media_url is required")
+	if newSocmed.Social_media_url == "" {
+		return newSocmed, errors.New("social_media_url is required")
 	}
 
-	newSosmed.User_id = idToken
-	newSosmed.Created_at = time.Now()
-	sosmed, id, err := ss.sosmedRepository.CreateSosmed(newSosmed)
-	sosmed.Id = id
-	return sosmed, err
+	newSocmed.User_id = idToken
+	newSocmed.Created_at = time.Now()
+	socmed, id, err := ss.socmedRepository.CreateSocmed(newSocmed)
+	socmed.Id = id
+	return socmed, err
 }
 
-func (ss *SosmedService) GetAllSosmed() ([]_entities.Social_media, error) {
-	sosmeds, err := ss.sosmedRepository.GetAllSosmed()
-	return sosmeds, err
+func (ss *SocmedService) GetAllSocmed() ([]_entities.Social_media, error) {
+	socmeds, err := ss.socmedRepository.GetAllSocmed()
+	return socmeds, err
 }
 
-func (ss *SosmedService) UpdateSosmed(updateSosmed _entities.Social_media, idSosmed int, idToken int) (_entities.Social_media, error) {
-	getSosmed, err := ss.sosmedRepository.GetSosmed(idSosmed)
+func (ss *SocmedService) UpdateSocmed(updateSocmed _entities.Social_media, idSocmed int, idToken int) (_entities.Social_media, error) {
+	getSocmed, err := ss.socmedRepository.GetSocmed(idSocmed)
 	if err != nil {
-		return getSosmed, err
+		return getSocmed, err
 	}
 
 	//validasi user login
-	if idToken != getSosmed.User_id {
-		return getSosmed, errors.New("unauthorized")
+	if idToken != getSocmed.User_id {
+		return getSocmed, errors.New("unauthorized")
 	}
 
 	//validasi update social_media
-	if updateSosmed.Name != "" {
-		getSosmed.Name = updateSosmed.Name
+	if updateSocmed.Name != "" {
+		getSocmed.Name = updateSocmed.Name
 	}
-	if updateSosmed.Social_media_url != "" {
-		getSosmed.Social_media_url = updateSosmed.Social_media_url
+	if updateSocmed.Social_media_url != "" {
+		getSocmed.Social_media_url = updateSocmed.Social_media_url
 	}
 
-	sosmed, err := ss.sosmedRepository.UpdateSosmed(getSosmed, idSosmed)
-	sosmed.Id = idSosmed
-	sosmed.Updated_at.Time = time.Now()
-	return sosmed, err
+	socmed, err := ss.socmedRepository.UpdateSocmed(getSocmed, idSocmed)
+	socmed.Id = idSocmed
+	socmed.Updated_at.Time = time.Now()
+	return socmed, err
 }
 
-func (ss *SosmedService) DeleteSosmed(idSosmed int, idToken int) error {
-	sosmed, errGetSosmed := ss.sosmedRepository.GetSosmed(idSosmed)
-	if errGetSosmed != nil {
-		return errGetSosmed
+func (ss *SocmedService) DeleteSocmed(idSocmed int, idToken int) error {
+	socmed, errGetSocmed := ss.socmedRepository.GetSocmed(idSocmed)
+	if errGetSocmed != nil {
+		return errGetSocmed
 	}
 
-	if idToken != sosmed.User_id {
+	if idToken != socmed.User_id {
 		return errors.New("unauthorized")
 	}
 
-	err := ss.sosmedRepository.DeleteSosmed(idSosmed)
+	err := ss.socmedRepository.DeleteSocmed(idSocmed)
 	return err
 }

@@ -4,10 +4,10 @@ import (
 	_entities "final-project-usamah/entities"
 )
 
-type SosmedRepositoryInterface interface {
-	CreateSosmed(newSosmed _entities.Social_media) (_entities.Social_media, int, error)
-	GetAllSosmed() ([]_entities.Social_media, error)
-	GetSosmed(idSosmed int) (_entities.Social_media, error)
-	UpdateSosmed(updateSosmed _entities.Social_media, idSosmed int) (_entities.Social_media, error)
-	DeleteSosmed(idSosmed int) error
+type SocmedRepositoryInterface interface {
+	CreateSocmed(newSocmed _entities.Social_media) (_entities.Social_media, int, error)
+	GetAllSocmed() ([]_entities.Social_media, error)
+	GetSocmed(idSocmed int) (_entities.Social_media, error)
+	UpdateSocmed(updateSocmed _entities.Social_media, idSocmed int) (_entities.Social_media, error)
+	DeleteSocmed(idSocmed int) error
 }

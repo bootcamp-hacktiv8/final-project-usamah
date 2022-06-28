@@ -17,9 +17,9 @@ import (
 	_commentRepository "final-project-usamah/repository/comment"
 	_commentService "final-project-usamah/service/comment"
 
-	_sosmedHandler "final-project-usamah/delivery/handler/social_media"
-	_sosmedRepository "final-project-usamah/repository/social_media"
-	_sosmedService "final-project-usamah/service/social_media"
+	_socmedHandler "final-project-usamah/delivery/handler/social_media"
+	_socmedRepository "final-project-usamah/repository/social_media"
+	_socmedService "final-project-usamah/service/social_media"
 
 	"fmt"
 	"log"
@@ -47,9 +47,9 @@ func main() {
 	commentService := _commentService.NewCommentService(commentRepository)
 	commentHandler := _commentHandler.NewCommentHandler(commentService)
 
-	sosmedRepository := _sosmedRepository.NewSosmedRepository(db)
-	sosmedService := _sosmedService.NewSosmedService(sosmedRepository)
-	sosmedHandler := _sosmedHandler.NewSosmedHandler(sosmedService)
+	sosmedRepository := _socmedRepository.NewSocmedRepository(db)
+	sosmedService := _socmedService.NewSocmedService(sosmedRepository)
+	sosmedHandler := _socmedHandler.NewSocmedHandler(sosmedService)
 
 	r := mux.NewRouter()
 	r.Use(middlewares.LoggingMiddleware)

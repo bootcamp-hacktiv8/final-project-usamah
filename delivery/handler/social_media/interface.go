@@ -2,9 +2,9 @@ package social_media
 
 import "net/http"
 
-type SosmedHandlerInterface interface {
-	CreateSosmedHandler(w http.ResponseWriter, r *http.Request)
-	GetAllSosmedHandler(w http.ResponseWriter, r *http.Request)
-	UpdateSosmedHandler(w http.ResponseWriter, r *http.Request)
-	DeleteSosmedHandler(w http.ResponseWriter, r *http.Request)
+type SocmedHandlerInterface interface {
+	CreateSocmedHandler(w http.ResponseWriter, r *http.Request)
+	GetAllSocmedHandler(w http.ResponseWriter, r *http.Request)
+	UpdateSocmedHandler(w http.ResponseWriter, r *http.Request)
+	DeleteSocmedHandler(w http.ResponseWriter, r *http.Request)
 }

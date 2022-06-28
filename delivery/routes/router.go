@@ -3,7 +3,7 @@ package routes
 import (
 	_commentHandler "final-project-usamah/delivery/handler/comment"
 	_photoHandler "final-project-usamah/delivery/handler/photo"
-	_sosmedHandler "final-project-usamah/delivery/handler/social_media"
+	_socmedHandler "final-project-usamah/delivery/handler/social_media"
 	_userHandler "final-project-usamah/delivery/handler/user"
 	"final-project-usamah/delivery/middlewares"
 	"net/http"
@@ -32,9 +32,9 @@ func CommentPath(r *mux.Router, ch *_commentHandler.CommentHandler) {
 	r.Handle("/comments/{commentId}", middlewares.Authentication(http.HandlerFunc(ch.DeleteCommentHandler))).Methods("DELETE")
 }
 
-func SocialMediaPath(r *mux.Router, sh *_sosmedHandler.SosmedHandler) {
-	r.Handle("/socialmedias", middlewares.Authentication(http.HandlerFunc(sh.CreateSosmedHandler))).Methods("POST")
-	r.Handle("/socialmedias", middlewares.Authentication(http.HandlerFunc(sh.GetAllSosmedHandler))).Methods("GET")
-	r.Handle("/socialmedias/{socialMediaId}", middlewares.Authentication(http.HandlerFunc(sh.UpdateSosmedHandler))).Methods("PUT")
-	r.Handle("/socialmedias/{socialMediaId}", middlewares.Authentication(http.HandlerFunc(sh.DeleteSosmedHandler))).Methods("DELETE")
+func SocialMediaPath(r *mux.Router, sh *_socmedHandler.SocmedHandler) {
+	r.Handle("/socialmedias", middlewares.Authentication(http.HandlerFunc(sh.CreateSocmedHandler))).Methods("POST")
+	r.Handle("/socialmedias", middlewares.Authentication(http.HandlerFunc(sh.GetAllSocmedHandler))).Methods("GET")
+	r.Handle("/socialmedias/{socialMediaId}", middlewares.Authentication(http.HandlerFunc(sh.UpdateSocmedHandler))).Methods("PUT")
+	r.Handle("/socialmedias/{socialMediaId}", middlewares.Authentication(http.HandlerFunc(sh.DeleteSocmedHandler))).Methods("DELETE")
 }
